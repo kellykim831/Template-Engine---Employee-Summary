@@ -16,7 +16,7 @@ const render = require("./lib/htmlRenderer");
 let employeeId = 1;
 let team = [];
 
-function managerPrompt() {
+function managerPrompts() {
     return inquirer.prompt([
         {
             message: "Please build your team."
@@ -120,83 +120,112 @@ function employeePrompts() {
 
                         if (response.otherEmployees === "Yes") {
                             employeePrompts();
-                        }else{
-                            generateTeamPage();
+                        } else {
+                            render();
                             return;
-                            }
-                        });
-                    } else{
+                        }
+                    });
+            } else {
 
 
-                        return inquirer.prompt ([
-                            {
-                                type: "input",
-                                name: "schoolName",
-                                message: "What is the name of the school that your intern attends?"
-                            }, 
-                            {
-                                type: "list",
-                                name: "otherEmployees",
-                                message: "Which type of team member would you like to add?",
-                                choices: ["Yes", "No"],
-                            }
-                        ])
-                        .then(function(response) {
-                            let internSchool = response.internSchool;
-                            let intern = new Intern(
-                                employeeName,
-                                employeeId,
-                                employeeEmail,
-                                internSchool
-                            );
-                            team.push(intern);
-                            employeeId++;
-                            
-                            if (response.otherEmployees === "Yes"){
-                                employeePrompts();
-                            } else {
-                                generateTeamPage();
-                                return;
-                            }
-                        });
+                return inquirer.prompt([
+                    {
+                        type: "input",
+                        name: "schoolName",
+                        message: "What is the name of the school that your intern attends?"
+                    },
+                    {
+                        type: "list",
+                        name: "otherEmployees",
+                        message: "Which type of team member would you like to add?",
+                        choices: ["Yes", "No"],
                     }
-            });
-        }
+                ])
+                    .then(function (response) {
+                        let internSchool = response.internSchool;
+                        let intern = new Intern(
+                            employeeName,
+                            employeeId,
+                            employeeEmail,
+                            internSchool
+                        );
+                        team.push(intern);
+                        employeeId++;
 
-        function generateTeamPage(){
-            let allCards = "";
-            team.forEach(item => {
-                let cardString = item.createCard();
-                allCards += cardString;
-            });
-        
-
-
-
-
-
-
-
-
-
-        
-            
-    ]);
+                        if (response.otherEmployees === "Yes") {
+                            employeePrompts();
+                        } else {
+                            render();
+                            return;
+                        }
+                    });
+            }
+        });
 }
 
-//the answers typed inside the integrated terminal will be plugged into the main.html file.
-promptUser()
-    .then(function (answers) {
-        const main = mainHtml(answers);
-
-        return writeFileAsync("main.html", main);
-    })
-    .then(function () {
-        console.log("Successfully wrote to main.html");
-    })
-    .catch(function (err) {
-        console.log(err);
+function render() {
+    let allCards = "";
+    team.forEach(item => {
+        let cardString = item.createCard();
+        allCards += cardString;
     });
+
+    let fullHTML = `
+    < !DOCTYPE html >
+        <html lang="en">
+
+            <head>
+                <meta charset="UTF-8" />
+                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+                <title>My Team</title>
+                <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+                    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+                    <link rel="stylesheet" href="style.css">
+                        <script src="https://kit.fontawesome.com/c502137733.js"></script>
+    </head>
+
+                    <body>
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-12 jumbotron mb-3 team-heading">
+                                    <h1 class="text-center">My Team</h1>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container">
+                            <div class="row">
+                                <div class="team-area col-12 d-flex justify-content-center">
+                                    ${allCards}
+                                </div>
+                            </div>
+                        </div>
+                    </body>
+    
+    </html> `;
+
+    fs.writeFile("./output/team.html", fullHTML, function (err) {
+        if (err) {
+            return console.log(err);
+        }
+    });
+}
+
+managerPrompts();
+
+    //the answers typed inside the integrated terminal will be plugged into the main.html file.
+    // promptUser()
+    //     .then(function (answers) {
+    //         const main = mainHtml(answers);
+
+    //         return writeFileAsync("main.html", main);
+    //     })
+    //     .then(function () {
+    //         console.log("Successfully wrote to main.html");
+    //     })
+    //     .catch(function (err) {
+    //         console.log(err);
+    //     });
 
 
 
@@ -204,9 +233,7 @@ promptUser()
 // above) and pass in an array containing all employee objects; the `render` function will
 // generate and return a block of HTML including templated divs for each employee!
 
-function render() {
 
-};
 
 
 // After you have your html, you're now ready to create an HTML file using the HTML
@@ -215,7 +242,7 @@ function render() {
 // Hint: you may need to check if the `output` folder exists and create it if it
 // does not.
 
-var outputPath;
+
 
 // HINT: each employee type (manager, engineer, or intern) has slightly different
 // information; write your code to ask different questions via inquirer depending on
