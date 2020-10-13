@@ -17,10 +17,8 @@ let employeeId = 1;
 let team = [];
 
 function managerPrompts() {
-    return inquirer.prompt([
-        {
-            message: "Please build your team."
-        },
+    console.log("Let's start building your team!");
+    inquirer.prompt([
         {
             type: "input",
             name: "managerName",
@@ -57,7 +55,7 @@ function managerPrompts() {
 
             team.push(manager);
             employeeId++;
-            console.log('Now its time to build your team!');
+            console.log("Let's add your team members!");
 
             employeePrompts();
 
@@ -65,7 +63,7 @@ function managerPrompts() {
 }
 
 function employeePrompts() {
-    return inquirer.prompt([
+    inquirer.prompt([
 
         {
             type: "list",
@@ -100,8 +98,8 @@ function employeePrompts() {
                     },
                     {
                         type: "list",
-                        name: "otherEmployees",
-                        message: "Which type of team member would you like to add?",
+                        name: "shouldAddAnotherEmployee",
+                        message: "Would you like to add another team member?",
                         choices: ["Yes", "No"],
                     }
 
@@ -118,7 +116,7 @@ function employeePrompts() {
                         team.push(engineer);
                         employeeId++;
 
-                        if (response.otherEmployees === "Yes") {
+                        if (response.shouldAddAnotherEmployee === "Yes") {
                             employeePrompts();
                         } else {
                             render();
@@ -136,8 +134,8 @@ function employeePrompts() {
                     },
                     {
                         type: "list",
-                        name: "otherEmployees",
-                        message: "Which type of team member would you like to add?",
+                        name: "shouldAddAnotherEmployee",
+                        message: "Would you like to add another team member?",
                         choices: ["Yes", "No"],
                     }
                 ])
@@ -163,53 +161,21 @@ function employeePrompts() {
         });
 }
 
-function render() {
-    let allCards = "";
-    team.forEach(item => {
-        let cardString = item.createCard();
-        allCards += cardString;
-    });
+// function render() {
+//     let allCards = "";
+//     team.forEach(item => {
+//         let cardString = item.createCard();
+//         allCards += cardString;
+//     });
 
-    let fullHTML = `
-    < !DOCTYPE html >
-        <html lang="en">
-
-            <head>
-                <meta charset="UTF-8" />
-                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-                <title>My Team</title>
-                <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-                    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-                    <link rel="stylesheet" href="style.css">
-                        <script src="https://kit.fontawesome.com/c502137733.js"></script>
-    </head>
-
-                    <body>
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-12 jumbotron mb-3 team-heading">
-                                    <h1 class="text-center">My Team</h1>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="container">
-                            <div class="row">
-                                <div class="team-area col-12 d-flex justify-content-center">
-                                    ${allCards}
-                                </div>
-                            </div>
-                        </div>
-                    </body>
-    
-    </html> `;
-
-    fs.writeFile("./output/team.html", fullHTML, function (err) {
-        if (err) {
-            return console.log(err);
-        }
-    });
-}
+//     const output = render(employeeList);
+//     fs.writeFile("/output/team.html", output, "utf8", function(err){
+//         console.log("success!")
+//     })
+//     console.log(output);
+//     console.log(employeeList)
+//     console.log("DONE")
+// }
 
 managerPrompts();
 
