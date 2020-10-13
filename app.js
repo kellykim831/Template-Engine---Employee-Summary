@@ -14,6 +14,94 @@ const render = require("./lib/htmlRenderer");
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
+
+//create function that will present prompts to populate the main.html file
+function promptUser() {
+    return inquirer.prompt([
+        {
+            type: "input",
+            name: "teamMember",
+            message: "Which type of team member would you like to add?"
+        },
+        {
+            type: "input",
+            name: "name",
+            message: "What is your engineer's name?"
+        },
+        {
+            type: "input",
+            name: "id",
+            message: "What is your engineer's id?"
+        },
+        {
+            type: "input",
+            name: "email",
+            message: "What is your engineer's email address?"
+        },
+        {
+            type: "input",
+            name: "gitHubUsername",
+            message: "What is your Github Username?"
+        },
+        {
+            type: "input",
+            name: "name",
+            message: "What is your manager's name?"
+        },
+        {
+            type: "input",
+            name: "id",
+            message: "What is your manager's id?"
+        },
+        {
+            type: "input",
+            name: "email",
+            message: "What is your manager's email address?"
+        },
+        {
+            type: "input",
+            name: "officeNumber",
+            message: "What is your office number?"
+        },
+        {
+            type: "input",
+            name: "name",
+            message: "What is your intern's name?"
+        },
+        {
+            type: "input",
+            name: "id",
+            message: "What is your intern's id?"
+        },
+        {
+            type: "input",
+            name: "email",
+            message: "What is your interns's email address?"
+        },
+        {
+            type: "input",
+            name: "schoolName",
+            message: "What is the name of the school that your intern attends?"
+        },
+    ]);
+}
+
+//the answers typed inside the integrated terminal will be plugged into the readme.md file.
+promptUser()
+    .then(function (answers) {
+        const markdown = generateMarkdown(answers);
+
+        return writeFileAsync("README.md", markdown);
+    })
+    .then(function () {
+        console.log("Successfully wrote to README.md");
+    })
+    .catch(function (err) {
+        console.log(err);
+    });
+
+
+
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
 // generate and return a block of HTML including templated divs for each employee!
