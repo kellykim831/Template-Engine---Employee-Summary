@@ -55,14 +55,41 @@ function managerPrompt() {
                     officeNumber
                 );
 
-                team.push(manager)
-            }
+                team.push(manager);
+                employeeId++;
+                console.log('Now its time to build your team!');
 
-        {
-            type: "input",
-            name: "teamMember",
-            message: "Which type of team member would you like to add?"
-        },
+                employeePrompts();
+
+            });
+        }
+
+        function employeePrompts() {
+           return inquirer.prompt([
+
+            {
+                type: "list",
+                name: "employeeTitle",
+                message: "Which type of team member would you like to add?",
+                choices: ["Engineer", "Intern"],
+            },
+            {
+                type: "input",
+                name: "teamMember",
+                message: "What is the employee's name?",
+            },
+            {
+                type: "input",
+                name: "employeeEmail",
+                message: "What is the employee's email address?",
+            },
+
+
+
+           ])
+        }
+
+       
         {
             type: "input",
             name: "name",
