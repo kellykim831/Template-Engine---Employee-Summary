@@ -13,8 +13,8 @@ const render = require("./lib/htmlRenderer");
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
-let employeeId = 1;
-let team = [];
+var employeeId = 1;
+var team = [];
 
 function managerPrompts() {
     console.log("Let's start building your team!");
@@ -119,7 +119,7 @@ function employeePrompts() {
                         if (response.shouldAddAnotherEmployee === "Yes") {
                             employeePrompts();
                         } else {
-                            render();
+                            generateTeam();
                             return;
                         }
                     });
@@ -153,7 +153,7 @@ function employeePrompts() {
                         if (response.otherEmployees === "Yes") {
                             employeePrompts();
                         } else {
-                            render();
+                            generateTeam();
                             return;
                         }
                     });
@@ -161,21 +161,21 @@ function employeePrompts() {
         });
 }
 
-// function render() {
-//     let allCards = "";
-//     team.forEach(item => {
-//         let cardString = item.createCard();
-//         allCards += cardString;
-//     });
+function generateTeam() {
+    // let allCards = "";
+    // team.forEach(item => {
+    //     let cardString = item.createCard();
+    //     allCards += cardString;
+    // });
 
-//     const output = render(employeeList);
-//     fs.writeFile("/output/team.html", output, "utf8", function(err){
-//         console.log("success!")
-//     })
-//     console.log(output);
-//     console.log(employeeList)
-//     console.log("DONE")
-// }
+    const output = render(team);
+    fs.writeFile("/output/team.html", output, "utf8", function(err){
+        console.log("success!")
+    })
+    console.log(output);
+    console.log(team)
+    console.log("DONE")
+}
 
 managerPrompts();
 
