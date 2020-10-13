@@ -39,7 +39,7 @@ function managerPrompts() {
         {
             type: "input",
             name: "officeNumber",
-            message: "What is your office number?"
+            message: "What is your manager's office number?"
         },
     ])
 
@@ -69,7 +69,7 @@ function employeePrompts() {
 
         {
             type: "list",
-            name: "employeeTitle",
+            name: "employeeRole",
             message: "Which type of team member would you like to add?",
             choices: ["Engineer", "Intern"],
         },
@@ -86,17 +86,17 @@ function employeePrompts() {
     ])
 
         .then(function (response) {
-            let employeeTitle = response.employeeTitle;
+            let employeeRole = response.employeeRole;
             let employeeName = response.employeeName;
             let employeeEmail = response.employeeEmail;
 
-            if (employeeTitle === "Engineer") {
+            if (employeeRole === "Engineer") {
                 inquirer.prompt([
 
                     {
                         type: "input",
                         name: "gitHubUsername",
-                        message: "What is your Github Username?"
+                        message: "What is your engineer's Github username?"
                     },
                     {
                         type: "list",
