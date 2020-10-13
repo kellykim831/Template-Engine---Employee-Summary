@@ -13,11 +13,51 @@ const render = require("./lib/htmlRenderer");
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
+let employeeId = 1;
+let team = [];
 
-
-//create function that will present prompts to populate the main.html file
-function promptUser() {
+function managerPrompt() {
     return inquirer.prompt([
+        {
+            message: "Please build your team."
+        },
+        {
+            type: "input",
+            name: "managerName",
+            message: "What is your manager's name?",
+        },
+        {
+            type: "input",
+            name: "managerId",
+            message: "What is your manager's id?",
+        },
+        {
+            type: "input",
+            name: "managerEmail",
+            message: "What is your manager's email address?"
+        },
+        {
+            type: "input",
+            name: "officeNumber",
+            message: "What is your office number?"
+        },
+    ])
+
+            .then(function(response) {
+                let managerName = response.managerName;
+                let managerId = response.managerId;
+                let managerEmail = response.managerEmail;
+                let officeNumber = response.officeNumber;
+                let manager = new Manager(
+                    managerName,
+                    managerId,
+                    managerEmail,
+                    officeNumber
+                );
+
+                team.push(manager)
+            }
+
         {
             type: "input",
             name: "teamMember",
@@ -43,26 +83,7 @@ function promptUser() {
             name: "gitHubUsername",
             message: "What is your Github Username?"
         },
-        {
-            type: "input",
-            name: "name",
-            message: "What is your manager's name?"
-        },
-        {
-            type: "input",
-            name: "id",
-            message: "What is your manager's id?"
-        },
-        {
-            type: "input",
-            name: "email",
-            message: "What is your manager's email address?"
-        },
-        {
-            type: "input",
-            name: "officeNumber",
-            message: "What is your office number?"
-        },
+        
         {
             type: "input",
             name: "name",
@@ -86,15 +107,15 @@ function promptUser() {
     ]);
 }
 
-//the answers typed inside the integrated terminal will be plugged into the readme.md file.
+//the answers typed inside the integrated terminal will be plugged into the main.html file.
 promptUser()
     .then(function (answers) {
-        const markdown = generateMarkdown(answers);
+        const main = mainHtml(answers);
 
-        return writeFileAsync("README.md", markdown);
+        return writeFileAsync("main.html", main);
     })
     .then(function () {
-        console.log("Successfully wrote to README.md");
+        console.log("Successfully wrote to main.html");
     })
     .catch(function (err) {
         console.log(err);
@@ -106,11 +127,18 @@ promptUser()
 // above) and pass in an array containing all employee objects; the `render` function will
 // generate and return a block of HTML including templated divs for each employee!
 
+function render(){
+
+};
+
+
 // After you have your html, you're now ready to create an HTML file using the HTML
 // returned from the `render` function. Now write it to a file named `team.html` in the
 // `output` folder. You can use the variable `outputPath` above target this location.
 // Hint: you may need to check if the `output` folder exists and create it if it
 // does not.
+
+var outputPath; 
 
 // HINT: each employee type (manager, engineer, or intern) has slightly different
 // information; write your code to ask different questions via inquirer depending on
