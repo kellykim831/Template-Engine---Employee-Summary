@@ -13,7 +13,7 @@ const render = require("./lib/htmlRenderer");
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
-var employeeId = 1;
+
 var team = [];
 
 function managerPrompts() {
@@ -54,7 +54,6 @@ function managerPrompts() {
             );
 
             team.push(manager);
-            employeeId++;
             console.log("Let's add your team members!");
 
             employeePrompts();
@@ -81,12 +80,18 @@ function employeePrompts() {
             name: "employeeEmail",
             message: "What is the employee's email address?",
         },
+        {
+            type: "input",
+            name: "employeeId",
+            message: "What is the employee's id number?",
+        }
     ])
 
         .then(function (response) {
             let employeeRole = response.employeeRole;
             let employeeName = response.employeeName;
             let employeeEmail = response.employeeEmail;
+            let employeeId = response.employeeId;
 
             if (employeeRole === "Engineer") {
                 inquirer.prompt([
@@ -114,7 +119,6 @@ function employeePrompts() {
                         );
 
                         team.push(engineer);
-                        employeeId++;
 
                         if (response.shouldAddAnotherEmployee === "Yes") {
                             employeePrompts();
@@ -148,7 +152,6 @@ function employeePrompts() {
                             schoolName
                         );
                         team.push(intern);
-                        employeeId++;
 
                         if (response.otherEmployees === "Yes") {
                             employeePrompts();
@@ -169,7 +172,7 @@ function generateTeam() {
     // });
 
     const output = render(team);
-    fs.writeFile("./output/team.html", output, "utf8", function(err){
+    fs.writeFile("./lib/output/team.html", output, "utf8", function(err){
         console.log("success!")
     })
     console.log(output);
@@ -178,22 +181,6 @@ function generateTeam() {
 }
 
 managerPrompts();
-
-    //the answers typed inside the integrated terminal will be plugged into the main.html file.
-    // promptUser()
-    //     .then(function (answers) {
-    //         const main = mainHtml(answers);
-
-    //         return writeFileAsync("main.html", main);
-    //     })
-    //     .then(function () {
-    //         console.log("Successfully wrote to main.html");
-    //     })
-    //     .catch(function (err) {
-    //         console.log(err);
-    //     });
-
-
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
