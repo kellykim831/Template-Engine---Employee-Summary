@@ -165,12 +165,6 @@ function employeePrompts() {
 }
 
 function generateTeam() {
-    // let allCards = "";
-    // team.forEach(item => {
-    //     let cardString = item.createCard();
-    //     allCards += cardString;
-    // });
-
     const output = render(team);
     fs.writeFile("./lib/output/team.html", output, "utf8", function(err){
         console.log("success!")
