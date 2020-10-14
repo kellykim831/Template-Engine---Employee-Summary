@@ -140,12 +140,12 @@ function employeePrompts() {
                     }
                 ])
                     .then(function (response) {
-                        let internSchool = response.internSchool;
+                        let schoolName = response.schoolName;
                         let intern = new Intern(
                             employeeName,
                             employeeId,
                             employeeEmail,
-                            internSchool
+                            schoolName
                         );
                         team.push(intern);
                         employeeId++;
@@ -169,7 +169,7 @@ function generateTeam() {
     // });
 
     const output = render(team);
-    fs.writeFile("/output/team.html", output, "utf8", function(err){
+    fs.writeFile("./output/team.html", output, "utf8", function(err){
         console.log("success!")
     })
     console.log(output);
